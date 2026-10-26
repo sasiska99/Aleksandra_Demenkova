@@ -1,0 +1,95 @@
+*{box-sizing:border-box}
+:root{--blush:#FDD0D0;--milk:#FCEDED;--latte:#F7F1E8;--wisteria:#E6E3F7;--sky:#98C1E9;--rain:#B3DFEB;--sea:#E7F5F9;--butter:#FED57D;--matcha:#9CA362;--clover:#5BA881;--apricot:#F0A351;--cherry:#C62A29;--ink:#4a2a2e;
+ --hand:'Gaegu','Patrick Hand',cursive}  /* change --hand to swap the handwritten font everywhere */
+html,body{margin:0}
+body{min-height:100vh;display:grid;place-items:center;padding:60px 130px 36px 36px;color:var(--ink);font:400 1.3rem/1.4 var(--hand);
+ background-color:var(--blush);
+ background-image:
+  linear-gradient(90deg,transparent 0 41%,rgba(198,42,41,.38) 41% 42%,transparent 42% 44%,rgba(198,42,41,.26) 44% 44.9%,transparent 44.9%),
+  linear-gradient(0deg,transparent 0 63%,rgba(198,42,41,.38) 63% 64%,transparent 64% 66%,rgba(198,42,41,.26) 66% 66.9%,transparent 66.9%),
+  linear-gradient(90deg,transparent 0 6%,rgba(91,168,129,.34) 6% 24%,transparent 24% 52%,rgba(179,223,235,.8) 52% 64%,transparent 64% 80%,rgba(230,227,247,.85) 80% 90%,transparent 90%),
+  linear-gradient(0deg,transparent 0 10%,rgba(179,223,235,.65) 10% 20%,transparent 20% 46%,rgba(91,168,129,.3) 46% 62%,transparent 62% 84%,rgba(254,213,125,.55) 84% 92%,transparent 92%);
+ background-size:300px 300px}
+.stage{position:relative;width:min(1100px,100%)}
+.book{position:relative;z-index:2;isolation:isolate;display:grid;grid-template-columns:1fr 1fr;height:min(680px,calc(100vh - 96px));min-height:560px;perspective:2400px}
+/* paper layers peeking out from under the pages */
+.book::before,.book::after{content:"";position:absolute;inset:-8px;z-index:-1;border-radius:36px 30px 34px 28px/30px 34px 28px 36px;box-shadow:0 12px 28px rgba(74,42,46,.22)}
+.book::before{background:var(--wisteria);transform:rotate(-.8deg)}
+.book::after{background:var(--milk);transform:rotate(.6deg);box-shadow:none}
+.spine{position:absolute;inset:0 calc(50% - 26px);background:linear-gradient(90deg,transparent,rgba(90,50,40,.16) 50%,transparent);pointer-events:none;z-index:8}
+.page{position:relative;display:flex;flex-direction:column;padding:42px 46px 30px;overflow:auto;background:var(--latte)}
+.left{border-radius:30px 10px 10px 30px/26px 12px 14px 32px}.right{border-radius:10px 30px 30px 10px/12px 26px 32px 14px}
+.flipper{position:absolute;top:0;width:50%;height:100%;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.5,.05,.3,1);z-index:6}
+.flipper.fwd{right:0;transform-origin:left center}.flipper.back{left:0;transform-origin:right center}
+.flipper.fwd.go{transform:rotateY(-180deg)}.flipper.back.go{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+.face.b{transform:rotateY(180deg)}
+
+/* Bookmarks sit behind the book, tucked between the pages */
+.tabs{position:absolute;left:100%;top:56px;margin-left:-44px;z-index:1;display:flex;flex-direction:column;gap:12px}
+.tab{all:unset;cursor:pointer;width:140px;padding:13px 16px 13px 56px;background:var(--c);color:var(--ink);font:400 1.35rem/1 'Instrument Serif',serif;border:1.5px solid var(--ink);border-left:0;border-radius:4px 18px 16px 6px/6px 14px 18px 4px;transform:translateX(0) rotate(var(--r,0deg));transition:transform .25s}
+.tab:nth-child(odd){--r:.8deg}.tab:nth-child(even){--r:-.7deg}
+.tab:hover,.tab:focus-visible{transform:translateX(10px) rotate(var(--r))}
+.tab[aria-current=true]{transform:translateX(22px) rotate(0deg)}
+.tab:focus-visible{outline:3px solid var(--cherry);outline-offset:2px}
+.cover-btn{all:unset;cursor:pointer;position:absolute;top:-42px;left:6px;padding:4px 16px;background:var(--latte);border:1.5px solid var(--ink);border-radius:18px 8px 16px 10px/10px 16px 8px 18px;font:400 .78rem 'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);transform:rotate(-1.5deg)}
+.cover-btn:hover{background:var(--butter)}.cover-btn:focus-visible{outline:3px solid var(--cherry);outline-offset:3px}
+
+/* Type */
+.label{font:400 .75rem/1.4 'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;margin:0 0 .6em}
+h1{font:400 clamp(2.8rem,5.4vw,4.4rem)/.98 'Instrument Serif',serif;margin:.1em 0 .3em}
+h2{position:relative;isolation:isolate;font:400 3.1rem/1 'Instrument Serif',serif;margin:0 0 .5em;display:inline-block;align-self:flex-start;padding:0 .2em;transform:rotate(-1deg)}
+h2::before{content:"";position:absolute;z-index:-1;left:-.05em;right:-.15em;bottom:.04em;height:.5em;background:var(--c,var(--blush));transform:rotate(-1.4deg) skewX(-10deg);border-radius:50% 40% 55% 45%/60% 50% 50% 40%;clip-path:polygon(0 22%,3% 4%,14% 12%,31% 0,52% 9%,73% 2%,94% 10%,100% 3%,97% 38%,100% 62%,95% 96%,76% 88%,55% 100%,33% 90%,14% 98%,4% 88%,1% 64%)}
+h3{font:400 1.65rem/1.15 'Instrument Serif',serif;margin:.9em 0 .2em}
+p{margin:.3em 0 .7em}
+.lede{font-size:1.5rem;line-height:1.25;max-width:24ch}
+.note{font:700 1.6rem/1.1 var(--hand);color:var(--cherry);margin:.5em 0;transform:rotate(-2deg)}
+.meta{font:400 .78rem/1.5 'DM Mono',monospace;letter-spacing:.06em;margin:0 0 .6em;opacity:.75}
+a{color:var(--cherry);text-underline-offset:4px}
+a:focus-visible,button:focus-visible{outline:3px solid var(--cherry);outline-offset:3px}
+ul{padding-left:1.1em;margin:.3em 0 .6em}li{margin-bottom:.2em}li::marker{content:"✦  ";color:var(--cherry);font-size:.7em}
+
+/* Scrapbook scraps: torn paper, tape, tilt */
+.card{--clip:polygon(0.0% 1.0%,5.0% 1.3%,10.7% 1.2%,16.4% 0.0%,20.3% 1.5%,24.9% 1.4%,27.3% 0.8%,30.3% 0.9%,34.6% 0.0%,37.5% 0.4%,43.2% 1.2%,45.8% 1.3%,48.3% 1.0%,50.9% 0.0%,56.3% 0.3%,59.2% 1.6%,64.7% 0.5%,70.5% 0.9%,75.2% 0.3%,81.0% 1.1%,86.9% 1.4%,90.1% 0.6%,92.7% 0.2%,95.0% 0.5%,99.4% 0.0%,99.6% 0.0%,99.1% 4.5%,99.7% 10.0%,99.2% 15.4%,98.9% 18.6%,99.2% 21.8%,100.0% 29.0%,99.6% 35.9%,100.0% 41.8%,99.8% 45.0%,99.8% 52.8%,99.0% 59.6%,99.6% 67.3%,99.4% 72.1%,99.9% 79.0%,99.1% 85.7%,100.0% 93.0%,100.0% 99.9%,96.6% 99.0%,91.0% 99.5%,85.3% 99.1%,82.0% 99.5%,79.3% 99.9%,76.7% 98.9%,70.7% 99.7%,68.5% 98.4%,64.4% 99.4%,61.4% 99.0%,56.1% 99.3%,52.5% 99.9%,46.8% 99.9%,42.8% 98.7%,40.3% 98.8%,34.5% 99.0%,29.3% 99.8%,25.6% 99.8%,20.2% 99.5%,16.4% 98.4%,11.0% 98.4%,7.2% 99.2%,2.3% 99.2%,0.4% 100.0%,0.4% 96.3%,1.1% 88.3%,0.5% 82.2%,0.1% 77.5%,0.9% 73.1%,0.4% 65.8%,0.9% 58.9%,0.7% 52.4%,0.4% 45.6%,0.3% 39.1%,0.8% 33.6%,0.3% 27.2%,0.7% 19.5%,0.0% 13.6%,0.3% 7.8%,0.5% 1.5%);--p:var(--milk);--tape:var(--butter);--tilt:-1.1deg;--tr:-4deg;
+ position:relative;isolation:isolate;margin:6px 0 24px;padding:20px 28px 14px;transform:rotate(var(--tilt));filter:drop-shadow(2px 4px 0 rgba(74,42,46,.2))}
+.card::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--p);clip-path:var(--clip)}
+.card::after{content:"";position:absolute;top:-11px;left:50%;width:96px;height:26px;margin-left:-48px;background:var(--tape);opacity:.92;transform:rotate(var(--tr));clip-path:polygon(2% 8%,12% 0,24% 10%,38% 2%,52% 9%,66% 0,80% 8%,92% 1%,100% 10%,97% 50%,100% 92%,86% 100%,70% 91%,55% 100%,40% 92%,25% 100%,10% 92%,0 96%,3% 50%)}
+.right .card{--clip:polygon(0.0% 0.8%,4.6% 1.1%,7.2% 0.0%,10.7% 0.4%,15.9% 1.1%,20.3% 0.9%,25.0% 0.2%,28.8% 0.3%,34.4% 0.1%,39.7% 0.1%,44.4% 0.5%,48.0% 1.3%,50.1% 0.1%,55.8% 0.8%,58.1% 1.6%,63.9% 0.2%,67.6% 0.2%,70.8% 1.0%,73.5% 1.1%,75.7% 0.3%,81.0% 0.6%,84.6% 1.0%,88.6% 0.6%,90.7% 1.2%,96.5% 1.6%,99.6% 0.0%,99.2% 4.8%,99.9% 11.2%,99.6% 15.4%,99.1% 20.9%,100.0% 26.4%,99.5% 33.5%,99.8% 39.1%,99.6% 44.3%,99.9% 51.1%,99.8% 56.9%,100.0% 63.3%,99.6% 67.7%,99.9% 73.9%,99.8% 79.2%,99.5% 83.6%,99.5% 91.4%,99.8% 99.2%,100.0% 99.4%,97.2% 98.8%,91.6% 100.0%,88.5% 98.8%,85.2% 99.6%,83.1% 99.9%,78.6% 98.4%,72.6% 99.2%,70.6% 99.5%,65.4% 98.7%,60.8% 99.6%,56.7% 99.2%,52.2% 99.6%,46.4% 98.6%,43.8% 99.5%,38.3% 99.6%,32.5% 99.2%,27.7% 98.9%,24.9% 99.5%,21.9% 98.9%,17.1% 99.8%,11.5% 99.3%,8.6% 99.3%,2.7% 99.1%,1.0% 100.0%,0.8% 92.2%,0.6% 87.1%,0.9% 79.6%,0.4% 73.7%,0.8% 68.9%,0.0% 63.0%,1.0% 56.5%,1.0% 49.5%,0.6% 41.9%,0.4% 35.0%,0.4% 31.5%,1.0% 26.9%,0.6% 20.5%,0.1% 14.4%,0.8% 8.7%,0.3% 3.7%);--p:var(--sea);--tape:var(--blush);--tilt:.9deg;--tr:3deg}
+.card:nth-of-type(2){--clip:polygon(0.0% 1.0%,4.8% 1.5%,7.6% 0.1%,12.9% 0.5%,16.4% 1.3%,19.1% 1.5%,23.1% 0.1%,28.7% 0.9%,31.1% 1.3%,36.2% 1.2%,40.8% 1.6%,42.8% 1.6%,47.4% 0.4%,51.9% 0.5%,56.5% 1.1%,60.6% 0.2%,64.1% 0.5%,69.1% 1.5%,74.2% 0.8%,76.9% 1.1%,80.0% 1.6%,82.7% 1.5%,84.7% 1.2%,88.1% 0.9%,91.8% 0.5%,95.5% 1.3%,98.9% 0.6%,99.8% 0.0%,99.4% 4.8%,99.8% 10.4%,99.5% 17.2%,99.6% 20.7%,99.6% 23.9%,99.7% 27.5%,99.2% 33.3%,99.5% 37.8%,99.4% 43.4%,99.8% 50.9%,99.4% 57.8%,99.2% 65.2%,99.9% 68.2%,99.7% 75.2%,99.9% 81.3%,99.5% 87.1%,100.0% 92.4%,99.1% 99.9%,100.0% 99.0%,97.1% 99.7%,91.7% 99.5%,88.2% 98.6%,84.8% 98.4%,82.1% 98.6%,78.9% 99.8%,75.1% 98.7%,72.7% 99.0%,67.2% 100.0%,63.3% 99.5%,59.4% 98.7%,55.7% 99.5%,52.8% 98.7%,50.2% 98.9%,44.3% 98.9%,38.6% 99.8%,34.2% 99.0%,31.9% 99.3%,28.7% 99.8%,25.1% 99.9%,19.4% 99.7%,15.2% 98.9%,13.1% 98.5%,7.4% 99.1%,3.4% 98.6%,0.2% 100.0%,0.2% 92.3%,0.6% 86.6%,0.4% 79.7%,0.2% 73.6%,0.2% 67.1%,0.6% 62.3%,1.0% 55.7%,0.5% 47.9%,0.7% 44.5%,0.8% 38.6%,0.9% 35.4%,0.9% 31.7%,0.6% 23.8%,0.7% 18.6%,0.7% 14.9%,1.0% 7.7%,0.8% 1.2%);--p:var(--wisteria);--tape:var(--butter);--tilt:-.6deg;--tr:-2deg}
+.card:nth-of-type(3){--p:#FFF1CF;--tape:var(--rain);--tilt:.7deg;--tr:5deg}
+.card h3{margin-top:.2em}
+.card.empty{--p:rgba(255,255,255,.5);--tape:var(--matcha)}
+.card.empty::before{outline:2px dashed var(--ink)}
+.tags{display:flex;flex-wrap:wrap;gap:9px;margin:.5em 0 .8em}
+.tags span{padding:3px 14px;font:400 .78rem 'DM Mono',monospace;letter-spacing:.05em;background:var(--wisteria);border:1.2px solid var(--ink);border-radius:18px 8px 16px 10px/10px 16px 8px 18px;transform:rotate(-1.5deg)}
+.tags span:nth-child(3n+2){background:var(--butter);border-radius:8px 18px 10px 16px/16px 8px 18px 10px;transform:rotate(1.2deg)}
+.tags span:nth-child(3n){background:var(--rain);transform:rotate(-.5deg)}
+.ph{display:grid;place-items:center;text-align:center;padding:14px;min-height:120px;border:2px dashed var(--ink);background:rgba(255,255,255,.55);font:400 1.15rem/1.1 var(--hand);border-radius:46% 54% 42% 58%/55% 40% 60% 45%}
+.ph.tall{min-height:170px;margin:.6em 0}
+.ph.round{width:190px;height:190px;margin:0 0 1em;position:relative;transform:rotate(2deg)}
+.ph.round::before{content:"";position:absolute;top:-12px;left:50%;width:84px;height:24px;margin-left:-42px;background:var(--butter);opacity:.92;transform:rotate(-4deg)}
+.btn{display:inline-block;padding:11px 26px;background:var(--cherry);color:#fff;text-decoration:none;font:400 .85rem 'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;border-radius:28px 12px 26px 14px/14px 26px 12px 28px;transition:transform .2s}
+.btn:hover{transform:rotate(-2deg) scale(1.04)}
+.toc{list-style:none;padding:0;margin:0}.toc li::marker{content:""}
+.toc li{display:flex;align-items:baseline;gap:10px;padding:8px 0;border-bottom:2px dotted var(--ink);margin:0}
+.toc button{all:unset;cursor:pointer;font:400 1.9rem/1.1 'Instrument Serif',serif}.toc button:hover{color:var(--cherry);font-style:italic}
+.toc span{margin-left:auto;font:700 1.35rem var(--hand);color:var(--cherry)}
+.cover{justify-content:center}
+.cake{position:absolute;bottom:20px;right:28px;width:140px;transform:rotate(5deg);pointer-events:none;user-select:none}
+.cake.l{left:28px;right:auto;transform:rotate(-5deg)}.cake.big{position:static;width:240px;align-self:center;margin-top:1em}
+img{max-width:100%}
+
+@media (max-width:860px){
+ body{display:block;padding:52px 14px 20px}
+ .tabs{position:static;margin:0;flex-direction:row;overflow-x:auto;gap:6px;padding:0 0 10px}
+ .tab{flex:none;width:auto;padding:10px 16px;border-left:1.5px solid var(--ink);transform:none!important}
+ .tab[aria-current=true]{background:var(--ink);color:var(--latte)}
+ .book{display:block;height:auto;min-height:0;perspective:none}
+ .spine,.flipper{display:none}
+ .page{overflow:visible;padding:34px 24px 26px}
+ .left{border-radius:26px 26px 6px 6px}.right{border-radius:6px 6px 26px 26px}
+ h2{font-size:2.6rem}.cake{position:static;display:block;width:130px;margin:16px 0 0 auto}.cake.l{margin-left:0}.cake.big{width:200px;margin:16px auto 0}
+ .book.fade{animation:fadein .4s}
+}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.flipper{transition:none}.book.fade{animation:none}.tab,.btn{transition:none}}
